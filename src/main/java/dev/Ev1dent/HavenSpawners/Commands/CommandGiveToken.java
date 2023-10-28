@@ -26,13 +26,10 @@ public class CommandGiveToken implements CommandExecutor {
             sender.sendMessage(Utils.mmDeserialize(Config().getString("messages.noPerms")));
             return true;
         }
-        if (args.length == 0) {
-            sender.sendMessage(Utils.mmDeserialize(Config().getString("messages.noArguments")));
-            return true;
-        }
 
         ItemStack token = CustomItems.spawnerToken();
-        if (Bukkit.getPlayer(args[0]) == null) {
+
+        if (args.length == 0 || Bukkit.getPlayer(args[0]) == null) {
             sender.sendMessage(Utils.mmDeserialize(Config().getString("messages.invalidPlayer")));
             return true;
         } else {
