@@ -1,15 +1,16 @@
 package dev.Ev1dent.HavenSpawners.Utilities;
 
-import dev.Ev1dent.HavenSpawners.HSMain;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 public class Utils {
 
-    // Allows me to be lazy, and use colors cleanly. :)
-    public String Color(String s){
-        return ChatColor.translateAlternateColorCodes('&', s);
+    public Component mmDeserialize(String message){
+        MiniMessage mm = MiniMessage.miniMessage();
+        return mm.deserialize(message);
     }
 
     // Logging
@@ -25,8 +26,9 @@ public class Utils {
         Bukkit.getLogger().severe(log);
     }
 
-    public FileConfiguration Config(){
-        return HSMain.plugin.getConfig();
+    public void sendMessage(Player player, String message){
+        Audience adventurePlayer = (Audience) player;
+        adventurePlayer.sendMessage(mmDeserialize(message));
     }
 }
 
