@@ -1,6 +1,7 @@
 package dev.Ev1dent.HavenSpawners.Events;
 
 import dev.Ev1dent.HavenSpawners.HSMain;
+import dev.Ev1dent.HavenSpawners.Utilities.CustomItems;
 import dev.Ev1dent.HavenSpawners.Utilities.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -14,9 +15,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
-
-import java.util.HashMap;
 
 public class BlockBreak implements Listener {
     Utils Utils = new Utils();
@@ -28,52 +26,48 @@ public class BlockBreak implements Listener {
     @EventHandler
     public void onBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        if(canBreakAdmin(player)) return; // Allow mods to break while in GMC + Crouching
-        if(event.isCancelled()) return; // should respect claims, regions and any other protected areas
+        if (canBreakAdmin(player)) return; // Allow mods to break while in GMC + Crouching
+        if (event.isCancelled()) return; // should respect claims, regions and any other protected areas
 
         Block block = event.getBlock();
-        if(block.getType().equals(Material.SPAWNER)){
+        if (block.getType().equals(Material.SPAWNER)) {
             CreatureSpawner spawner = (CreatureSpawner) block.getState();
             EntityType entityType = spawner.getSpawnedType();
 
-            if(!canMine(player, entityType)){
+            if (!canMine(player, entityType)) {
                 Utils.sendMessage(player, Config().getString("messages.cannotMine"));
             }
-
-            for (ItemStack item : player.getInventory().getContents()) {
-                if (!item.getType().equals(Material.CONDUIT)) {
-                    continue;
-                }
-
-                ItemMeta meta = item.getItemMeta();
-
-
-                    ItemStack DroppedSpawner = new ItemStack(Material.SPAWNER);
-                    String entity = Config().getString("spawnerName"), ET = entity.replace("{MOB}", String.valueOf(entityType));
-                    ItemMeta SpawnerMeta = DroppedSpawner.getItemMeta();
-                    SpawnerMeta.setDisplayName(Utils.Color(ET));
-                    SpawnerMeta.setNa
-                    DroppedSpawner.setItemMeta(SpawnerMeta);
-
-                    player.getInventory().remove(item);
-                    e.setExpToDrop(0);
-                    HashMap<Integer, ItemStack> hashMap = player.getInventory().addItem(DroppedSpawner);
-                    player.sendMessage(Utils.Color(Utils.Config().getString("Messages.Spawner-Received")));
-                    if (!hashMap.isEmpty()) {
-                        player.getWorld().dropItem(player.getLocation(), DroppedSpawner);
-                    }
-                    return;
-                }
+            if(hasToken(player)){
+                removeToken(player);
+                giveSpawner(entityType);
             }
         }
+    }
 
-    public boolean canBreakAdmin(Player player){
+    private boolean canBreakAdmin(Player player){
         return player.getGameMode().equals(GameMode.CREATIVE)
                 && player.isSneaking();
     }
-    public boolean canMine(Player player, EntityType entityType) {
+
+    private boolean canMine(Player player, EntityType entityType) {
         return player.hasPermission("havenspawners.spawners.mine")
                 || Config().getList("disabled-spawners").contains(entityType.toString());
+    }
+
+    private void giveSpawner(EntityType entityType){
+        ItemStack spawner = new ItemStack(Material.SPAWNER);
+        ItemMeta meta = spawner.getItemMeta();
+        String parsedName = Config().getString("spawnerName").replace("{MOB}", String.valueOf(entityType));
+        meta.displayName(Utils.mmDeserialize(parsedName));
+        spawner.setItemMeta(meta);
+    }
+
+    private boolean hasToken(Player player){
+        return player.getInventory().containsAtLeast(CustomItems.spawnerToken(), 1);
+    }
+
+    private void removeToken(Player player){
+        Utils.sendMessage(player, "<red>Remove conduit here. (not done yet)");
     }
 
 }
