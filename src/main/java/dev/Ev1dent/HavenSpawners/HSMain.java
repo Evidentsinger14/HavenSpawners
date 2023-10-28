@@ -9,15 +9,9 @@ import dev.Ev1dent.HavenSpawners.Events.NoSpawnEggs;
 import dev.Ev1dent.HavenSpawners.Utilities.TabCompleter;
 import dev.Ev1dent.HavenSpawners.Utilities.Utils;
 import dev.Ev1dent.HavenSpawners.Events.BlockBreak;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
 public final class HSMain extends JavaPlugin implements Listener {
 
     public static HSMain plugin;
