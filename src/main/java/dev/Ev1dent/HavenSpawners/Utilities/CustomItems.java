@@ -23,7 +23,7 @@ public class CustomItems {
     }
 
     public static ItemStack spawnerBlock(String mobType){
-        String spawnerName = Config().getString("Spawner.Name").replace("{MOB}", mobType);
+        String spawnerName = Config().getString("spawnerName").replace("{MOB}", mobType);
         ItemStack spawner = new ItemStack(Material.SPAWNER);
         ItemMeta meta = spawner.getItemMeta();
         meta.displayName(Utils.mmDeserialize(spawnerName));
