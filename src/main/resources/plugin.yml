@@ -8,9 +8,9 @@ api-version: 1.18
 description: Forces players to use a token to mine a spawner.
 
 commands:
-  giveconduit:
+  givetoken:
     usage: /<command> <player>
-    description: gives a player a spawner conduit.
+    description: gives a player a spawner token.
   givespawner:
     usage: /<command> <player> <type>
     description: gives a player a spwaner.
@@ -21,8 +21,8 @@ commands:
       - hs
 
 permissions:
-  havenspawners.command.giveconduit:
-    description: allows access to /giveconduit.
+  havenspawners.command.givetoken:
+    description: allows access to /givetoken.
   havenspawners.command.givespawner:
     description: allows player to give spawners.
   havenspawners.havenspawners:
