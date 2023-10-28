@@ -26,7 +26,7 @@ public class CommandHavenSpawners implements CommandExecutor {
         if(args.length == 0){
             sender.sendMessage(Utils.mmDeserialize("            <gold><bold>HavenSpawners            "));
             sender.sendMessage(Utils.mmDeserialize("<strikethrough>                                       "));
-            sender.sendMessage(Utils.mmDeserialize("<yellow>This server is running <gold><underline>HavenSpawners <green>v" + HSMain.plugin.getDescription().getVersion()));
+            sender.sendMessage(Utils.mmDeserialize("<yellow>This server is running <gold><underlined>HavenSpawners <green>v" + HSMain.plugin.getDescription().getVersion()));
             sender.sendMessage(Utils.mmDeserialize("<yellow>- <gold>Bukkit Version: " + Bukkit.getVersion()));
             return true;
         }
