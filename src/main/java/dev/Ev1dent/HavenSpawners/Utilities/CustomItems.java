@@ -19,6 +19,7 @@ public class CustomItems {
         ItemMeta meta = spawnerToken.getItemMeta();
         meta.displayName(Utils.mmDeserialize(Config().getString("tokenName")));
         spawnerToken.setAmount(1);
+        spawnerToken.setItemMeta(meta);
         return spawnerToken;
     }
 

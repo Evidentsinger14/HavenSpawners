@@ -27,6 +27,9 @@ public class BlockPlace implements Listener {
 
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
+        Utils.LogSevere(String.valueOf(isToken(item)));
+        Utils.LogSevere(String.valueOf(CustomItems.spawnerToken()));
+        Utils.LogSevere(String.valueOf(item));
         if(isToken(item)){
             event.setCancelled(true);
             Utils.sendMessage(player, Config().getString("messages.cannotPlace"));
