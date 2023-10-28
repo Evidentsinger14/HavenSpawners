@@ -37,7 +37,7 @@ public class BlockPlace implements Listener {
             String name = rawName[0].replaceAll("(?i)[§&][0-9A-FK-ORX]", "");
             CreatureSpawner spawner = (CreatureSpawner) event.getBlockPlaced().getState();
             setSpawner(spawner, name);
-            Utils.sendMessage(player, Config().getString("messages.spawnerPlaced").replace("{0}", rawName[0]));
+            Utils.sendMessage(player, Config().getString("messages.spawnerPlaced").replace("{0}", name));
         }
 
 
@@ -55,6 +55,7 @@ public class BlockPlace implements Listener {
         }
         catch (Exception err){
             Utils.LogWarn("Unknown Spawner placed. Defaulting to PIG");
+            spawner.setSpawnedType(EntityType.PIG);
         }
         spawner.update();
     }
