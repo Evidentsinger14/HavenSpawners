@@ -29,7 +29,7 @@ public class CommandGiveSpawner implements CommandExecutor {
             return true;
         }
         if(args.length < 2){
-            sender.sendMessage(Utils.mmDeserialize(Config().getString("messages.usage")));
+            sender.sendMessage(Utils.mmDeserialize(Config().getString("messages.usageFormat")));
             return true;
         }
 
@@ -40,7 +40,7 @@ public class CommandGiveSpawner implements CommandExecutor {
             return true;
             }
 
-        if(!Config().getList("enabled-mobs").contains(mobType)){
+        if(!Config().getList("enabled-spawners").contains(mobType)){
             Utils.sendMessage(player, Config().getString("messages.invalidMob"));
             return true;
         }
