@@ -19,7 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class BlockBreak implements Listener {
     Utils Utils = new Utils();
 
-    public FileConfiguration Config(){
+    private FileConfiguration Config(){
         return HSMain.plugin.getConfig();
     }
 

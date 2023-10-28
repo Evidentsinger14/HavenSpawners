@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public class Utils {
 
-    public Component mmParse(String message){
+    public Component mmDeserialize(String message){
         MiniMessage mm = MiniMessage.miniMessage();
         return mm.deserialize(message);
     }
@@ -28,7 +28,7 @@ public class Utils {
 
     public void sendMessage(Player player, String message){
         Audience adventurePlayer = (Audience) player;
-        adventurePlayer.sendMessage(mmParse(message));
+        adventurePlayer.sendMessage(mmDeserialize(message));
     }
 }
 

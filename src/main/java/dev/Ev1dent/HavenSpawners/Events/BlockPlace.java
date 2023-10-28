@@ -1,57 +1,61 @@
 package dev.Ev1dent.HavenSpawners.Events;
 
+import dev.Ev1dent.HavenSpawners.HSMain;
+import dev.Ev1dent.HavenSpawners.Utilities.CustomItems;
 import dev.Ev1dent.HavenSpawners.Utilities.Utils;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 public class BlockPlace implements Listener {
 
-    private final NamespacedKey key;
     Utils Utils = new Utils();
 
-    public BlockPlace(NamespacedKey key){
-        this.key = key;
+    private FileConfiguration Config(){
+        return HSMain.plugin.getConfig();
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent e) {
-        Player p = e.getPlayer();
-        ItemStack item = p.getInventory().getItemInMainHand();
-        Material ItemInHand = item.getType();
+    public void onBlockPlace(BlockPlaceEvent event) {
+        if(event.isCancelled()) return;
 
-        if (ItemInHand == Material.CONDUIT) {
-            ItemMeta meta = item.getItemMeta();
-            if (meta.getPersistentDataContainer().has(key, PersistentDataType.DOUBLE)) {
-                e.setCancelled(true);
-                p.sendMessage(Utils.Color(Utils.Config().getString("Messages.Place-Conduit")));
-            }
+        Player player = event.getPlayer();
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if(isToken(item)){
+            event.setCancelled(true);
+            Utils.sendMessage(player, Config().getString("messages.cannotPlace"));
         }
 
-        if(ItemInHand == Material.SPAWNER){
-            if(e.isCancelled()){
-                return;
-            }
-
-            String[] name = item.getItemMeta().getDisplayName().split(" ", 2);
-            String formatted = name[0].replaceAll("(?i)[§&][0-9A-FK-ORX]", "");
-            CreatureSpawner spawner = (CreatureSpawner) e.getBlockPlaced().getState();
-            try{
-                spawner.setSpawnedType(EntityType.valueOf(formatted.toUpperCase()));
-            }
-            catch (Exception err){
-                Utils.LogWarn("Unknown Spawner placed. Defaulting to PIG");
-            }
-            spawner.update();
-            p.sendMessage(Utils.Color("&6You have placed a " + name[0] + "&6 Spawner!"));
+        if(isSpawner(item)){
+            String[] rawName = item.getItemMeta().getDisplayName().split(" ", 2);
+            String name = rawName[0].replaceAll("(?i)[§&][0-9A-FK-ORX]", "");
+            CreatureSpawner spawner = (CreatureSpawner) event.getBlockPlaced().getState();
+            setSpawner(spawner, name);
+            Utils.sendMessage(player, Config().getString("messages.spawnerPlaced").replace("{0}", rawName[0]));
         }
+
+
+    }
+    private boolean isToken(ItemStack item){
+        return item == CustomItems.spawnerToken();
+    }
+
+    private boolean isSpawner(ItemStack item){
+        return item.getType() == Material.SPAWNER;
+    }
+    private void setSpawner(CreatureSpawner spawner, String name){
+        try{
+            spawner.setSpawnedType(EntityType.valueOf(name.toUpperCase()));
+        }
+        catch (Exception err){
+            Utils.LogWarn("Unknown Spawner placed. Defaulting to PIG");
+        }
+        spawner.update();
     }
 }

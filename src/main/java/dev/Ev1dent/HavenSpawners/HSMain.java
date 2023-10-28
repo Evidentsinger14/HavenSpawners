@@ -1,6 +1,6 @@
 package dev.Ev1dent.HavenSpawners;
 
-import dev.Ev1dent.HavenSpawners.Commands.CommandGiveConduit;
+import dev.Ev1dent.HavenSpawners.Commands.CommandGiveToken;
 import dev.Ev1dent.HavenSpawners.Commands.CommandGiveSpawner;
 import dev.Ev1dent.HavenSpawners.Commands.CommandHavenSpawners;
 import dev.Ev1dent.HavenSpawners.Events.AnvilRename;
@@ -20,13 +20,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 public final class HSMain extends JavaPlugin implements Listener {
 
-    private NamespacedKey key;
     public static HSMain plugin;
     Utils Utils = new Utils();
 
     @Override
     public void onEnable() {
-        key = new NamespacedKey(this, "conduit");
         plugin = this;
         saveDefaultConfig();
         registerCommands();
@@ -35,7 +33,7 @@ public final class HSMain extends JavaPlugin implements Listener {
     }
 
     public void registerCommands(){
-        this.getCommand("giveconduit").setExecutor(new CommandGiveConduit());
+        this.getCommand("givetoken").setExecutor(new CommandGiveToken());
         this.getCommand("givespawner").setExecutor(new CommandGiveSpawner());
         this.getCommand("havenspawners").setExecutor(new CommandHavenSpawners());
     }
@@ -51,18 +49,4 @@ public final class HSMain extends JavaPlugin implements Listener {
         this.getCommand("givespawner").setTabCompleter(new TabCompleter());
         this.getCommand("havenspawners").setTabCompleter(new TabCompleter());
     }
-
-    public ItemStack generateConduit(NamespacedKey key) {
-        ItemStack sConduit = new ItemStack(Material.CONDUIT);
-        ItemMeta meta = sConduit.getItemMeta();
-        meta.getPersistentDataContainer().set(key, PersistentDataType.DOUBLE, Math.random());
-        meta.setDisplayName(Utils.Color("&6Spawner Conduit"));
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(Utils.Color("&cConduit that allows you"));
-        lore.add(Utils.Color("&cto mine a spawner!"));
-        meta.setLore(lore);
-        sConduit.setItemMeta(meta);
-        return sConduit;
-    }
-
 }

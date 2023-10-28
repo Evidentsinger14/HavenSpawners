@@ -6,24 +6,28 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import dev.Ev1dent.HavenSpawners.Utilities.Utils;
-import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class CommandHavenSpawners implements CommandExecutor {
 
     Utils Utils = new Utils();
 
+    private FileConfiguration Config(){
+        return HSMain.plugin.getConfig();
+    }
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(!sender.hasPermission("havenspawners.havenspawners")){
-            sender.sendMessage(Utils.Color(Utils.Config().getString("Messages.No-Perms")));
+            sender.sendMessage(Utils.mmDeserialize(Config().getString("messages.noPerms")));
         }
 
         if(args.length == 0){
-            sender.sendMessage(Utils.Color("            &6&lHavenSpawners            "));
-            sender.sendMessage(Utils.Color("&m                                       "));
-            sender.sendMessage(Utils.Color("&eThis server is running &6&nHavenSpawners &av" + HSMain.plugin.getDescription().getVersion()));
-            sender.sendMessage(Utils.Color("&e- &6Bukkit Version: " + Bukkit.getVersion()));
+            sender.sendMessage(Utils.mmDeserialize("            <gold><bold>HavenSpawners            "));
+            sender.sendMessage(Utils.mmDeserialize("<strikethrough>                                       "));
+            sender.sendMessage(Utils.mmDeserialize("<yellow>This server is running <gold><underline>>HavenSpawners <green>v" + HSMain.plugin.getDescription().getVersion()));
+            sender.sendMessage(Utils.mmDeserialize("<yellow>- <gold>Bukkit Version: " + Bukkit.getVersion()));
             return true;
         }
 
@@ -31,7 +35,7 @@ public class CommandHavenSpawners implements CommandExecutor {
             case "reload":
                 HSMain.plugin.saveDefaultConfig();
                 HSMain.plugin.reloadConfig();
-                sender.sendMessage(Utils.Color("&2Config reloaded"));
+                sender.sendMessage(Utils.mmDeserialize("<green>Config reloaded"));
                 HSMain.plugin.addTabCompletion();
                 break;
 

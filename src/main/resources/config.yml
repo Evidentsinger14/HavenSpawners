@@ -1,6 +1,6 @@
 spawnerName: '<gold>{MOB} <yellow>Spawner'
 tokenName: '<gold>Spawner Token'
-tokenMaterial: ''
+tokenMaterial: 'CONDUIT'
 
 # Can be given with /givespawner
 # NOTE: ALL VALUES BELOW HERE, MUST BE IN CAPITAL LETTERS, WITH UNDERSCORES BETWEEN WORDS.
@@ -14,7 +14,7 @@ disabled-spawners:
   - WITHER
 
 messages:
-  usageFormat: '/<command> give <player> <MOB>'
+  usageFormat: '/<command> give <player> <mob>'
   noPerms: '<red>You are not permitted to use that command.'
   noToken: '<red>You need a Spawner Token to use that'
   noArguments: '<red>Please specify an argument.'
@@ -25,4 +25,5 @@ messages:
   invalidArgument: '<red>Unknown Argument'
   cannotPlace: '<red>You are not allowed to place that!'
   cannotRename: '<red>You are not permitted to rename that item in an anvil.'
-  cannotMine: '&cYou are not permitted to mine that.'
+  cannotMine: '<red>You are not permitted to mine that.'
+  spawnerPlaced: "<green>You have placed a <yellow>{0}</yellow> Spawner!"
