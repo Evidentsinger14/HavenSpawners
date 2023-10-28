@@ -1,32 +1,26 @@
-Spawner:
-  Name: '&6{MOB} &eSpawner'
+spawnerName: '<gold>{MOB} <yellow>Spawner'
 
 # Can be given with /givespawner
-
 # NOTE: ALL VALUES BELOW HERE, MUST BE IN CAPITAL LETTERS, WITH UNDERSCORES BETWEEN WORDS.
-Mobs:
+enabled-spawners:
   - SHEEP
   - COW
 
 # Cannot be mined
-DisabledSpawners:
+disabled-spawners:
   - BLAZE
   - WITHER
 
-Messages:
-  No-Perms: '&cYou are not permitted to use that command.'
-  No-Conduit: '&6You need a SpawnerConduit to use that'
-  No-Arguments: '&cPlease specify an argument.'
-  Invalid-Player: '&cPlease specify a valid player'
-  Invalid-Mob: '&cPlease specify a valid mob.'
-  Received: '&6You received a conduit.'
-  Unknown-Arg: '&6Unknown Argument'
-  Place-Conduit: '&cYou are not allowed to place that!'
-  Spawner-Received: '&6You have been given a mob spawner!'
-  No-Conduit1: '&6You need a SpawnerConduit to mine that!'
-  No-Conduit2: '&6You can buy them on /shop'
-  Cannot-Rename-Spawner: '&cYou are not allowed to rename spawners in an anvil!'
-  Cannot-Rename-Conduit: '&cYou are not allowed to rename conduits in an anvil'
-  Cant-Mine: '&cYou are not permitted to mine that.'
-  Usage: '/<command> give <player> <MOB>'
-  Disabled: '&cYou are not allowed to mine that spawner!'
+messages:
+  usageFormat: '/<command> give <player> <MOB>'
+  noPerms: '<red>You are not permitted to use that command.'
+  noConduit: '<red>You need a SpawnerConduit to use that'
+  noArguments: '<red>Please specify an argument.'
+  invalidPlayer: '<red>Please specify a valid player'
+  invalidMob: '<red>Please specify a valid mob.'
+  conduitReceived: '<green>You received a conduit!'
+  spawnerReceived: '<green>You received a mob spawner!'
+  invalidArgument: '<red>Unknown Argument'
+  cannotPlace: '<red>You are not allowed to place that!'
+  cannotRename: '<red>You are not permitted to rename that item in an anvil.'
+  cannotMine: '&cYou are not permitted to mine that.'

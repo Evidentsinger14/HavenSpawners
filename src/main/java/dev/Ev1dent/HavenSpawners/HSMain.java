@@ -35,14 +35,14 @@ public final class HSMain extends JavaPlugin implements Listener {
     }
 
     public void registerCommands(){
-        this.getCommand("giveconduit").setExecutor(new CommandGiveConduit(key, this));
+        this.getCommand("giveconduit").setExecutor(new CommandGiveConduit());
         this.getCommand("givespawner").setExecutor(new CommandGiveSpawner());
         this.getCommand("havenspawners").setExecutor(new CommandHavenSpawners());
     }
 
     public void registerEvents(){
-        this.getServer().getPluginManager().registerEvents(new BlockBreak(this, key), this);
-        this.getServer().getPluginManager().registerEvents(new BlockPlace(key), this);
+        this.getServer().getPluginManager().registerEvents(new BlockBreak(), this);
+        this.getServer().getPluginManager().registerEvents(new BlockPlace(), this);
         this.getServer().getPluginManager().registerEvents(new AnvilRename(), this);
         this.getServer().getPluginManager().registerEvents(new NoSpawnEggs(), this);
     }

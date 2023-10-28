@@ -1,10 +1,12 @@
 package dev.Ev1dent.HavenSpawners.Events;
 
+import dev.Ev1dent.HavenSpawners.HSMain;
 import dev.Ev1dent.HavenSpawners.Utilities.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,62 +15,44 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import dev.Ev1dent.HavenSpawners.HSMain;
 
 import java.util.HashMap;
 
 public class BlockBreak implements Listener {
-
-    private HSMain HSMain;
-    private final NamespacedKey key;
     Utils Utils = new Utils();
 
-    public BlockBreak(HSMain HSMain, NamespacedKey key){
-        this.HSMain = HSMain;
-        this.key = key;
+    public FileConfiguration Config(){
+        return HSMain.plugin.getConfig();
     }
 
     @EventHandler
-    public void onBreak(BlockBreakEvent e) {
-        if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE) && e.getPlayer().isSneaking()) return;
-        if(e.getBlock().getType().equals(Material.SPAWNER)){
-            CreatureSpawner spawner = (CreatureSpawner) e.getBlock().getState();
+    public void onBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        if(canBreakAdmin(player)) return; // Allow mods to break while in GMC + Crouching
+        if(event.isCancelled()) return; // should respect claims, regions and any other protected areas
+
+        Block block = event.getBlock();
+        if(block.getType().equals(Material.SPAWNER)){
+            CreatureSpawner spawner = (CreatureSpawner) block.getState();
             EntityType entityType = spawner.getSpawnedType();
-            Player player = e.getPlayer();
 
-            if(Utils.Config().getList("DisabledSpawners").contains(entityType.toString())){
-                player.sendMessage(Utils.Color(Utils.Config().getString("Messages.Disabled")));
-                e.setCancelled(true);
-                return;
+            if(!canMine(player, entityType)){
+                Utils.sendMessage(player, Config().getString("messages.cannotMine"));
             }
 
-            if (!e.getPlayer().hasPermission("havenspawners.spawners.mine")){
-                e.setCancelled(true);
-                player.sendMessage(Utils.Color(Utils.Config().getString("Messages.Cant-Mine")));
-                return;
-            }
-
-            if(e.isCancelled()){
-                return;
-            }
-
-            ItemStack i = e.getPlayer().getInventory().getItemInMainHand();
             for (ItemStack item : player.getInventory().getContents()) {
-                if (item == null) {
-                    continue;
-                }
-
                 if (!item.getType().equals(Material.CONDUIT)) {
                     continue;
                 }
 
                 ItemMeta meta = item.getItemMeta();
-                if (meta.getPersistentDataContainer().has(key, PersistentDataType.DOUBLE)) {
+
 
                     ItemStack DroppedSpawner = new ItemStack(Material.SPAWNER);
-                    String entity = Utils.Config().getString("Spawner.Name"), ET = entity.replace("{MOB}", String.valueOf(entityType));
+                    String entity = Config().getString("spawnerName"), ET = entity.replace("{MOB}", String.valueOf(entityType));
                     ItemMeta SpawnerMeta = DroppedSpawner.getItemMeta();
                     SpawnerMeta.setDisplayName(Utils.Color(ET));
+                    SpawnerMeta.setNa
                     DroppedSpawner.setItemMeta(SpawnerMeta);
 
                     player.getInventory().remove(item);
@@ -81,9 +65,15 @@ public class BlockBreak implements Listener {
                     return;
                 }
             }
-            e.setCancelled(true);
-            player.sendMessage(Utils.Color(Utils.Config().getString("Messages.No-Conduit1")));
-            player.sendMessage(Utils.Color(Utils.Config().getString("Messages.No-Conduit2")));
         }
+
+    public boolean canBreakAdmin(Player player){
+        return player.getGameMode().equals(GameMode.CREATIVE)
+                && player.isSneaking();
     }
+    public boolean canMine(Player player, EntityType entityType) {
+        return player.hasPermission("havenspawners.spawners.mine")
+                || Config().getList("disabled-spawners").contains(entityType.toString());
+    }
+
 }
