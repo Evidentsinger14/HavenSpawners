@@ -24,7 +24,7 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
                         return null;
                     }
                     case 2 : {
-                        StringUtil.copyPartialMatches(args[1], HSMain.plugin.getConfig().getStringList("enabled-spawners"), completions);
+                        StringUtil.copyPartialMatches(args[1], HSMain.plugin.getConfig().getStringList("spawners-for-givespawner"), completions);
                         Collections.sort(completions);
                         return completions;
                     }

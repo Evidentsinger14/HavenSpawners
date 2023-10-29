@@ -33,7 +33,7 @@ public class CommandHavenSpawners implements CommandExecutor {
 
         switch (args[0].toLowerCase()){
             case "reload":
-                HSMain.plugin.saveDefaultConfig();
+                HSMain.plugin.saveConfig();
                 HSMain.plugin.reloadConfig();
                 sender.sendMessage(Utils.mmDeserialize("<green>Config reloaded"));
                 HSMain.plugin.addTabCompletion();

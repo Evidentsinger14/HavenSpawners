@@ -39,7 +39,7 @@ public class CommandGiveSpawner implements CommandExecutor {
             return true;
             }
 
-        if(!Config().getList("enabled-spawners").contains(mobType)){
+        if(!Config().getList("spawners-for-givespawner").contains(mobType)){
             Utils.sendMessage(player, Config().getString("messages.invalidMob"));
             return true;
         }

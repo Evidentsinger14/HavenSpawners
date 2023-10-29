@@ -4,12 +4,12 @@ tokenMaterial: 'CONDUIT'
 
 # Can be given with /givespawner
 # NOTE: ALL VALUES BELOW HERE, MUST BE IN CAPITAL LETTERS, WITH UNDERSCORES BETWEEN WORDS.
-enabled-spawners:
+spawners-for-givespawner:
   - SHEEP
   - COW
 
 # Cannot be mined
-disabled-spawners:
+unminable-spawners:
   - BLAZE
   - WITHER
 

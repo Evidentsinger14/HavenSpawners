@@ -51,7 +51,7 @@ public class BlockBreak implements Listener {
 
     private boolean canMine(Player player, EntityType entityType) {
         return player.hasPermission("havenspawners.spawners.mine")
-                || Config().getList("disabled-spawners").contains(entityType.toString());
+                || Config().getList("unminable-spawners").contains(entityType.toString());
     }
 
     private void giveSpawner(EntityType entityType){
